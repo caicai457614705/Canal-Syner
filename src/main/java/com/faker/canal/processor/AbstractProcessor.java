@@ -62,8 +62,8 @@ public abstract class AbstractProcessor implements ColumnProcessor {
         }
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
-        logger.info(context_format, new Object[]{batchId, size, memsize, format.format(new Date()), startPosition,
-                endPosition});
+        logger.info(context_format, batchId, size, memsize, format.format(new Date()), startPosition,
+                endPosition);
     }
 
     private String buildPositionForDump(CanalEntry.Entry entry) {
@@ -89,9 +89,9 @@ public abstract class AbstractProcessor implements ColumnProcessor {
                     }
                     // 打印事务头信息，执行的线程id，事务耗时
                     logger.info(transaction_format,
-                            new Object[]{entry.getHeader().getLogfileName(),
-                                    String.valueOf(entry.getHeader().getLogfileOffset()),
-                                    String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime)});
+                            entry.getHeader().getLogfileName(),
+                            String.valueOf(entry.getHeader().getLogfileOffset()),
+                            String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime));
                     logger.info(" BEGIN ----> Thread id: {}", begin.getThreadId());
                 } else if (entry.getEntryType() == CanalEntry.EntryType.TRANSACTIONEND) {
                     CanalEntry.TransactionEnd end = null;
@@ -104,9 +104,9 @@ public abstract class AbstractProcessor implements ColumnProcessor {
                     logger.info("----------------\n");
                     logger.info(" END ----> transaction id: {}", end.getTransactionId());
                     logger.info(transaction_format,
-                            new Object[]{entry.getHeader().getLogfileName(),
-                                    String.valueOf(entry.getHeader().getLogfileOffset()),
-                                    String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime)});
+                            entry.getHeader().getLogfileName(),
+                            String.valueOf(entry.getHeader().getLogfileOffset()),
+                            String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime));
                 }
 
                 continue;
@@ -122,11 +122,13 @@ public abstract class AbstractProcessor implements ColumnProcessor {
 
                 CanalEntry.EventType eventType = rowChage.getEventType();
 
+
+                String schemaName = entry.getHeader().getSchemaName();
+                String tableName = entry.getHeader().getTableName();
                 logger.info(row_format,
-                        new Object[]{entry.getHeader().getLogfileName(),
-                                String.valueOf(entry.getHeader().getLogfileOffset()), entry.getHeader().getSchemaName(),
-                                entry.getHeader().getTableName(), eventType,
-                                String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime)});
+                        entry.getHeader().getLogfileName(),
+                        String.valueOf(entry.getHeader().getLogfileOffset()), schemaName, tableName, eventType,
+                        String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime));
 
                 if (eventType == CanalEntry.EventType.QUERY || rowChage.getIsDdl()) {
                     logger.info(" sql ----> " + rowChage.getSql() + SEP);
@@ -136,13 +138,13 @@ public abstract class AbstractProcessor implements ColumnProcessor {
                 for (CanalEntry.RowData rowData : rowChage.getRowDatasList()) {
                     if (eventType == CanalEntry.EventType.DELETE) {
                         printColumn(rowData.getBeforeColumnsList());
-                        processDelete(rowData.getBeforeColumnsList());
+                        processDelete(rowData.getBeforeColumnsList(),schemaName,tableName);
                     } else if (eventType == CanalEntry.EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList());
-                        processInsert(rowData.getBeforeColumnsList());
-                    } else {
+                        processInsert(rowData.getBeforeColumnsList(),schemaName,tableName);
+                    } else if (eventType == CanalEntry.EventType.UPDATE) {
                         printColumn(rowData.getAfterColumnsList());
-                        processUpdate(rowData.getBeforeColumnsList());
+                        processUpdate(rowData.getAfterColumnsList(),schemaName,tableName);
                     }
                 }
             }

@@ -7,20 +7,6 @@ import java.util.List;
 /**
  * Created by faker on 18/2/6.
  */
-public class EsSynProcessor extends AbstractProcessor {
+public class EsSynProcessor {
 
-    @Override
-    public void processDelete(List<CanalEntry.Column> colums) {
-
-    }
-
-    @Override
-    public void processInsert(List<CanalEntry.Column> colums) {
-
-    }
-
-    @Override
-    public void processUpdate(List<CanalEntry.Column> colums) {
-
-    }
 }

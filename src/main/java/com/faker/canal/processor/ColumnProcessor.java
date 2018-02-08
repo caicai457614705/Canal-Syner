@@ -12,9 +12,9 @@ public interface ColumnProcessor {
 
     void commonOperation(Message message, long batchId, int size);
 
-    void processDelete(List<CanalEntry.Column> colums);
+    void processDelete(List<CanalEntry.Column> colums, String schemaName, String tableName);
 
-    void processInsert(List<CanalEntry.Column> colums);
+    void processInsert(List<CanalEntry.Column> colums, String schemaName, String tableName);
 
-    void processUpdate(List<CanalEntry.Column> colums);
+    void processUpdate(List<CanalEntry.Column> colums, String schemaName, String tableName);
 }

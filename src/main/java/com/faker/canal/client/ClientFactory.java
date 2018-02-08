@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
  * Created by faker on 18/2/6.
  */
 public class ClientFactory {
-    protected final static Logger logger = LoggerFactory.getLogger(ClientFactory.class);
+    private final static Logger logger = LoggerFactory.getLogger(ClientFactory.class);
 
     public static BaseClient getClient(ModeEnum mode, String ip, int port, String destination) {
         CanalConnector connector = null;

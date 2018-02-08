@@ -21,11 +21,24 @@
     </build>
 
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kafka.version>0.9.0.1</kafka.version>
+        <canal.version>1.0.12</canal.version>
+    </properties>
+
     <dependencies>
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.alibaba.otter</groupId>
             <artifactId>canal.client</artifactId>
-            <version>1.0.12</version>
+            <version>${canal.version}</version>
         </dependency>
     </dependencies>
 
