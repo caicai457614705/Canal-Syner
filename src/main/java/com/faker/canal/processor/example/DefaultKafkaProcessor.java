@@ -1,28 +1,20 @@
-package com.faker.canal.processor;
+package com.faker.canal.processor.example;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.protocol.CanalEntry;
-import com.faker.canal.component.kafka.KafkaSender;
 import com.faker.canal.enums.ChangeType;
-import org.springframework.util.Assert;
+import com.faker.canal.processor.AbstractKafkaProcessor;
 
 import java.util.List;
 import java.util.Properties;
 
 /**
- * Created by faker on 18/2/6.
+ * Created by faker on 18/2/9.
  */
+public class DefaultKafkaProcessor extends AbstractKafkaProcessor {
 
-public class KafkaProcessor extends AbstractProcessor {
-
-    private KafkaSender kafkaSender;
-
-    private String topic;
-
-    public KafkaProcessor(Properties config) {
-        this.kafkaSender = KafkaSender.getKafkaSender(config);
-        Assert.isTrue(config.containsKey("topic"));
-        this.topic = config.getProperty("topic");
+    public DefaultKafkaProcessor(Properties config) {
+        super(config);
     }
 
     @Override
@@ -50,5 +42,4 @@ public class KafkaProcessor extends AbstractProcessor {
         jsonObject.put("eventType", changeType.getValue());
         kafkaSender.sendMessage(topic, jsonObject);
     }
-
 }

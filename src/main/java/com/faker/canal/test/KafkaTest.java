@@ -1,23 +1,23 @@
-package com.faker.canal.example;
+package com.faker.canal.test;
 
 import com.faker.canal.client.BaseClient;
 import com.faker.canal.client.ClientFactory;
 import com.faker.canal.enums.ModeEnum;
-import com.faker.canal.processor.KafkaProcessor;
+import com.faker.canal.processor.AbstractProcessor;
+import com.faker.canal.processor.example.DefaultKafkaProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by faker on 18/2/6.
  */
-public class BaseTest {
-    private final static Logger logger = LoggerFactory.getLogger(BaseTest.class);
+public class KafkaTest {
+    private final static Logger logger = LoggerFactory.getLogger(KafkaTest.class);
 
     public static void main(String[] args) {
-        BaseClient baseClient = ClientFactory.getClient(ModeEnum.Simple, "localhost", 11111, "example");
+        BaseClient baseClient = ClientFactory.getClient(ModeEnum.Simple, "localhost", 11111, "test");
         Properties config = new Properties();
         config.put("bootstrap.servers", "localhost:9092");
         //producer部分配置
@@ -29,7 +29,7 @@ public class BaseTest {
         //topic配置
         config.put("topic", "faker");
 
-        KafkaProcessor kafkaProcessor = new KafkaProcessor(config);
+        AbstractProcessor kafkaProcessor = new DefaultKafkaProcessor(config);
         baseClient.setProcessor(kafkaProcessor);
         baseClient.start();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

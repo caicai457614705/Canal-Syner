@@ -1,21 +1,13 @@
 package com.faker.canal.client;
 
 import com.alibaba.otter.canal.client.CanalConnector;
-import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
-import com.faker.canal.processor.BaseProcessor;
-import com.faker.canal.processor.ColumnProcessor;
-import com.google.protobuf.InvalidProtocolBufferException;
-import org.apache.commons.lang.SystemUtils;
+import com.faker.canal.processor.AbstractProcessor;
+import com.faker.canal.processor.example.DefaultProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by faker on 18/2/6.
@@ -27,14 +19,13 @@ public class BaseClient {
     private CanalConnector connector;
     private Thread thread = null;
     private String destination;
-    private ColumnProcessor processor = new BaseProcessor();
+    private AbstractProcessor processor = new DefaultProcessor();
     private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 
         public void uncaughtException(Thread t, Throwable e) {
             logger.error("parse events has an error", e);
         }
     };
-
 
 
     public BaseClient(String destination) {
@@ -116,7 +107,7 @@ public class BaseClient {
         return connector;
     }
 
-    public void setProcessor(ColumnProcessor processor) {
+    public void setProcessor(AbstractProcessor processor) {
         this.processor = processor;
     }
 

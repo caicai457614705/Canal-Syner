@@ -1,13 +1,14 @@
-package com.faker.canal.processor;
+package com.faker.canal.processor.example;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.faker.canal.processor.AbstractProcessor;
 
 import java.util.List;
 
 /**
  * Created by faker on 18/2/6.
  */
-public class BaseProcessor extends AbstractProcessor {
+public class DefaultProcessor extends AbstractProcessor {
 
     @Override
     public void processDelete(List<CanalEntry.Column> colums, String schemaName, String tableName) {

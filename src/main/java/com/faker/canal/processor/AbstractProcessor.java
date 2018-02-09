@@ -1,6 +1,5 @@
 package com.faker.canal.processor;
 
-import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.protocol.CanalEntry;
 import com.alibaba.otter.canal.protocol.Message;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -16,7 +15,7 @@ import java.util.List;
 /**
  * Created by faker on 18/2/6.
  */
-public abstract class AbstractProcessor implements ColumnProcessor {
+public abstract class AbstractProcessor implements Processor {
     private final static Logger logger = LoggerFactory.getLogger(AbstractProcessor.class);
     private static final String SEP = SystemUtils.LINE_SEPARATOR;
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
