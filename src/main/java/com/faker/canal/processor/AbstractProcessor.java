@@ -44,7 +44,7 @@ public abstract class AbstractProcessor implements Processor {
     @Override
     public void commonOperation(Message message, long batchId, int size) {
         this.printSummary(message, batchId, size);
-        this.printEntry(message.getEntries());
+        this.printEntryAndProcess(message.getEntries());
     }
 
     private void printSummary(Message message, long batchId, int size) {
@@ -73,7 +73,7 @@ public abstract class AbstractProcessor implements Processor {
                 + entry.getHeader().getExecuteTime() + "(" + format.format(date) + ")";
     }
 
-    private void printEntry(List<CanalEntry.Entry> entrys) {
+    private void printEntryAndProcess(List<CanalEntry.Entry> entrys) {
         for (CanalEntry.Entry entry : entrys) {
             long executeTime = entry.getHeader().getExecuteTime();
             long delayTime = new Date().getTime() - executeTime;
@@ -151,7 +151,7 @@ public abstract class AbstractProcessor implements Processor {
     }
 
 
-    private void printColumn(List<CanalEntry.Column> columns) {
+    public void printColumn(List<CanalEntry.Column> columns) {
         for (CanalEntry.Column column : columns) {
             StringBuilder builder = new StringBuilder();
             builder.append(column.getName()).append(" : ").append(column.getValue());
