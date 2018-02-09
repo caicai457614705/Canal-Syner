@@ -13,7 +13,7 @@ public class PrintTest {
     private final static Logger logger = LoggerFactory.getLogger(PrintTest.class);
 
     public static void main(String[] args) {
-        BaseClient baseClient = ClientFactory.getClient(ModeEnum.Simple, "localhost", 11111, "test");
+        BaseClient baseClient = ClientFactory.getClient(ModeEnum.Simple, "192.168.6.69", 11111, "example");
         baseClient.start();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

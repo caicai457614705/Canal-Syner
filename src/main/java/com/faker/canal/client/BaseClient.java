@@ -9,12 +9,16 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.util.Assert;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by faker on 18/2/6.
  */
 public class BaseClient {
     private final static Logger logger = LoggerFactory.getLogger(BaseClient.class);
 
+    private int batchSize = 5 * 1024;
+    private long timeout = 1000L;
     private volatile boolean running = false;
     private CanalConnector connector;
     private Thread thread = null;
@@ -67,14 +71,13 @@ public class BaseClient {
     }
 
     private void process() {
-        int batchSize = 5 * 1024;
         while (running) {
             try {
                 MDC.put("destination", destination);
                 connector.connect();
                 connector.subscribe(null);
                 while (running) {
-                    Message message = connector.getWithoutAck(batchSize); // 获取指定数量的数据
+                    Message message = connector.getWithoutAck(batchSize, timeout, TimeUnit.MILLISECONDS); // 获取指定数量的数据
                     long batchId = message.getId();
                     int size = message.getEntries().size();
                     if (batchId == -1 || size == 0) {
@@ -111,4 +114,19 @@ public class BaseClient {
         this.processor = processor;
     }
 
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
+    }
 }

@@ -40,6 +40,6 @@ public class DefaultKafkaProcessor extends AbstractKafkaProcessor {
         jsonObject.put("schemaName", schemaName);
         jsonObject.put("tableName", tableName);
         jsonObject.put("eventType", changeType.getValue());
-        kafkaSender.sendMessage(topic, jsonObject);
+        kafkaSender.sendMessage(topic, JSONObject.toJSONString(jsonObject));
     }
 }

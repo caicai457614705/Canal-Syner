@@ -140,7 +140,7 @@ public abstract class AbstractProcessor implements Processor {
                         processDelete(rowData.getBeforeColumnsList(),schemaName,tableName);
                     } else if (eventType == CanalEntry.EventType.INSERT) {
                         printColumn(rowData.getAfterColumnsList());
-                        processInsert(rowData.getBeforeColumnsList(),schemaName,tableName);
+                        processInsert(rowData.getAfterColumnsList(),schemaName,tableName);
                     } else if (eventType == CanalEntry.EventType.UPDATE) {
                         printColumn(rowData.getAfterColumnsList());
                         processUpdate(rowData.getAfterColumnsList(),schemaName,tableName);

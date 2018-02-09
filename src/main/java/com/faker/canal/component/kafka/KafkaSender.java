@@ -25,36 +25,36 @@ public class KafkaSender {
 
     }
 
-    private KafkaProducer<Object, Object> kafkaProducer;
+    private KafkaProducer<String, String> kafkaProducer;
 
     public static KafkaSender getKafkaSender(Properties config) {
         if (kafkasender == null) {
             synchronized (KafkaSender.class) {
                 if (kafkasender == null) {
                     kafkasender = new KafkaSender();
-                    kafkasender.kafkaProducer = new KafkaProducer<Object, Object>(config);
+                    kafkasender.kafkaProducer = new KafkaProducer<String, String>(config);
                 }
             }
         }
         return kafkasender;
     }
 
-    public void sendMessage(String topic, Integer partition, Object key, Object value) {
-        ProducerRecord<Object, Object> producerRecord = new ProducerRecord<>(topic, partition, key, value);
+    public void sendMessage(String topic, Integer partition, String key, String value) {
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, partition, key, value);
         this.doSend(producerRecord);
     }
 
-    public void sendMessage(String topic, Object key, Object value) {
-        ProducerRecord<Object, Object> producerRecord = new ProducerRecord<>(topic, key, value);
+    public void sendMessage(String topic, String key, String value) {
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, key, value);
         this.doSend(producerRecord);
     }
 
-    public void sendMessage(String topic, Object value) {
-        ProducerRecord<Object, Object> producerRecord = new ProducerRecord<>(topic, value);
+    public void sendMessage(String topic, String value) {
+        ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, value);
         this.doSend(producerRecord);
     }
 
-    private void doSend(ProducerRecord<Object, Object> producerRecord) {
+    private void doSend(ProducerRecord<String, String> producerRecord) {
         Future<RecordMetadata> future =  this.kafkaProducer.send(producerRecord, new Callback() {
             @Override
             public void onCompletion(RecordMetadata metadata, Exception exception) {
